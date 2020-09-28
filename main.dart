@@ -9,35 +9,34 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
 //! Correct Method of using ChangeNotifierProvider
 
-    return ChangeNotifierProvider<MyModel>(
-        lazy: false,
-        create: (_) => MyModel(someValue: 'new data'),
-        child: Consumer<MyModel>(builder: (context, foo, child) {
-          return MaterialApp(
-            debugShowCheckedModeBanner: false,
-            home: Scaffold(
-              backgroundColor: Colors.blue.shade200,
-              appBar: AppBar(title: Text('My App')),
-              body: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-                    width: 100,
-                    color: Colors.blue,
-                    child: Text(foo.someValue),
-                  ),
-                  Container(
-                    child: RaisedButton(
-                      onPressed: () => foo.doSomething(),
-                      child: Text('Press'),
+    return MaterialApp(                 //! Donot use ChangeNotifierProvider before MaterialApp, otherwise many features won't work.
+        debugShowCheckedModeBanner: false,
+        home: ChangeNotifierProvider<MyModel>(
+            lazy: false,
+            create: (_) => MyModel(someValue: 'new data'),
+            child: Consumer<MyModel>(builder: (context, foo, child) {
+              return Scaffold(
+                backgroundColor: Colors.blue.shade200,
+                appBar: AppBar(title: Text('My App')),
+                body: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: <Widget>[
+                    Container(
+                      width: 100,
+                      color: Colors.blue,
+                      child: Text(foo.someValue),
                     ),
-                  )
-                ],
-              ),
-            ),
-          );
-        }));
+                    Container(
+                      child: RaisedButton(
+                        onPressed: () => foo.doSomething(),
+                        child: Text('Press'),
+                      ),
+                    )
+                  ],
+                ),
+              );
+            })));
   }
 }
 
